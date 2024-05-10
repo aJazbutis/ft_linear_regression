@@ -1,10 +1,7 @@
 package internal
 
 import (
-	// "log"
-
 	"fmt"
-
 	"github.com/arafatk/glot"
 )
 
