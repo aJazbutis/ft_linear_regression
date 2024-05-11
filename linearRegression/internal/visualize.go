@@ -18,6 +18,7 @@ func PutPoints(points [][]float64) {
 	persist := false
 	debug := false
 	plot, _ := glot.NewPlot(dimensions, persist, debug)
+	fmt.Println(plot)
 	name := "Test"
 	style := "points"
 	points = Transpose(points)
@@ -34,5 +35,6 @@ func PutPoints(points [][]float64) {
 	plot.AddPointGroup(name, style, [][]float64{{n, x}, {mean, mean}})
 	name = "regr"
 	plot.AddPointGroup(name, style, [][]float64{points[0], pred})
-	plot.SavePlot("test.png")
+	fmt.Println(plot.SavePlot("test.png"))
+
 }
