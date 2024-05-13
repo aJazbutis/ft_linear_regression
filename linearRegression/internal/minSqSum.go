@@ -15,3 +15,7 @@ func MinSq(data [][]float64) (float64, float64) {
 	b0 = yMean - b1*xMean
 	return b0, b1
 }
+
+func MinSqEstimate(b0, b1, x float64) float64 {
+	return b0 + b1*x
+}
