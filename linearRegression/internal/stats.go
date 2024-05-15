@@ -63,6 +63,12 @@ func VarMean(data []float64, mean float64) float64 {
 	return SsMean(data, mean)/float64(len(data))
 }
 
+func StdDev(data []float64, mean float64) float64 {
+	return math.Sqrt(VarMean(data, mean))
+}
+
+
+
 func SsFit(data [][]float64, b0, b1 float64) float64 {
 	var ss float64
 	for i := range data[0] {

@@ -1,20 +1,39 @@
 package internal
 
 import (
-	// "math"
-	// "fmt"
+	"fmt"
+	"math"
 	"math/rand"
+	// "fmt"
+	// "math"
+	// "math/rand"
 )
 
 func GradientDescent(data [][]float64) []float64 {
+	learningRate := 0.01
+	iterations := 10000
+	minStepSize := 0.00001
+	theta := []float64{rand.Float64(), rand.Float64()}
+	for it := 0; it < iterations; it++ {
+		tmpT0, tmpT1 := TmpT0(data, learningRate, theta), TmpT1(data, learningRate, theta)
+		stepSize := math.Sqrt(math.Pow(tmpT0, 2) + math.Pow(tmpT1, 2))
+		if stepSize <= minStepSize {
+			fmt.Println("Iterations: ", it+1)
+			break
+		}
+		theta[0] -= tmpT0
+		theta[1] -= tmpT1
+		// fmt.Println(theta, stepSize)
+	}
+	return theta
 	// intercept := rand.Float64()
 	// slope := rand.Float64()
 	// stepNum := 1000
 	// learningRate := 0.001
 	// theta := []float64{0, 0}
 	// minStepSize := 0.001
-	_, m := MinMax(data[1])
-	theta := []float64{float64(m), -rand.Float64()}
+	// _, m := MinMax(data[1])
+	// theta := []float64{float64(m), -rand.Float64()}
 	// learningRate := 0.01
 	// maxStepNum := 1000
 	// fmt.Println(theta, "QQ")
@@ -47,6 +66,6 @@ func GradientDescent(data [][]float64) []float64 {
 		}
 		theta[0], theta[1] = theta[0] - tmpT0, theta[1] - tmpT1
 	}*/
-	return theta
+	// return theta
 
 }

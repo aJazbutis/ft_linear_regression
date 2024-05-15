@@ -14,5 +14,5 @@ func main()  {
 	}()
 	f := flag.String("f", "../../../data.csv", "csv file, format: x, y")
 	flag.Parse()
-	internal.PutPoints(internal.ParseCsv(*f))
+	internal.Visualize(internal.ParseCsv(*f))
 }
