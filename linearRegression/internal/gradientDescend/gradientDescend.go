@@ -51,12 +51,12 @@ func Descend(path string)  {
 	prediction := predict(data.Norm[0], data.Theta)
 	mse := stats.MSE([][]float64{data.Norm[1], prediction})
 	mae := stats.MAE([][]float64{data.Norm[1], prediction})
-	// VisualizeNormData(&data, prediction)
+	VisualizeNormData(&data, prediction)
 	fmt.Println("MSE:", mse)
 	fmt.Println("MAE:", mae)
 	data.rescaleThetas()
 	prediction = predict(data.Data[0], data.Theta)
-	// VisualizeRescaled(&data, prediction)
+	VisualizeRescaled(&data, prediction)
 	r2 := stats.R2(data.Data, data.Theta[0], data.Theta[1])
 	fmt.Println("r^2:",  r2)
 	fmt.Println("theta0:", data.Theta[0])
@@ -77,22 +77,3 @@ func descend(data *Data) {
 		data.Theta[1] -= tmpT1
 	}
 }
-/*
-func descend(data [][]float64) []float64 {
-	// learningRate := 0.01
-	iterations := 10000
-	minStepSize := 0.00001
-	theta := []float64{rand.Float64(), rand.Float64()}
-	for it := 0; it < iterations; it++ {
-		tmpT0, tmpT1 := TmpT0(data, learningRate, theta), TmpT1(data, learningRate, theta)
-		stepSize := math.Sqrt(math.Pow(tmpT0, 2) + math.Pow(tmpT1, 2))
-		if stepSize <= minStepSize {
-			fmt.Println("Iterations: ", it+1)
-			break
-		}
-		theta[0] -= tmpT0
-		theta[1] -= tmpT1
-	}
-	return theta
-}
-*/

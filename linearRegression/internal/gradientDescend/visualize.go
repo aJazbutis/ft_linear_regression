@@ -77,7 +77,7 @@ func VisualizeRescaled(data *Data, prediction []float64) {
 	style := "points"
 	plot.SetLabels("Mileage", "Price")
 	plot.AddPointGroup(name, style, data.Data)
-
+	style = "lines"
 	name = "Line of Regression"
 	// prediction := predict(data.Data[0], data.Theta)
 	plot.AddPointGroup(name, style, [][]float64{data.Data[0], prediction})
