@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"log"
-	"trainer/internal"
+	"gradient/internal"
 )
 
 func main()  {

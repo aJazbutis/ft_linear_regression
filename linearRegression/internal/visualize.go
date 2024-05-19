@@ -9,12 +9,12 @@ import (
 func line(b0, b1 float64, data []float64) []float64 {
 	ret := make([]float64, len(data))
 	for i := range data {
-		ret[i] = b0 + b1 * data[i]
-	} 
+		ret[i] = b0 + b1*data[i]
+	}
 	return ret
 }
 
-func test(theta []float64, data [][]float64) [] float64 {
+func test(theta []float64, data [][]float64) []float64 {
 	ret := make([]float64, len(data[0]))
 	for i := range ret {
 		ret[i] = math.Pow((data[1][i] - (theta[0] + theta[1]*data[0][i])), 2)
@@ -46,7 +46,7 @@ func normalizeMinMax(data [][]float64) [][]float64 {
 	for i := range data {
 		n, x := MinMax(data[i])
 		for j := range data[i] {
-			ret[i][j] = (data[i][j] - n)/(x-n)
+			ret[i][j] = (data[i][j] - n) / (x - n)
 		}
 	}
 	return ret
@@ -60,7 +60,7 @@ func Visualize(data [][]float64) {
 	defer plot.Close()
 	// fmt.Println(plot)
 	name := "data"
-	style := "points"	
+	style := "points"
 	data = Transpose(data)
 	fmt.Println(data)
 	plot.AddPointGroup(name, style, data)
@@ -78,7 +78,7 @@ func Visualize(data [][]float64) {
 	// name = "regr"
 	// plot.AddPointGroup(name, style, [][]float64{data[0], pred})
 	plot.ResetPlot()
-	// normData := normalize(data)	
+	// normData := normalize(data)
 	normData := normalizeMinMax(data)
 	name = "NORM"
 	style = "points"
@@ -88,7 +88,7 @@ func Visualize(data [][]float64) {
 	// pred := line(theta[0], theta[1], data[0])
 	pred := line(theta[0], theta[1], normData[0])
 	// for i := range pred {
-		// fmt.Println(data[0][i], pred[i])
+	// fmt.Println(data[0][i], pred[i])
 	// }
 	// fmt.Println(pred)
 	name = "gradient"
@@ -97,13 +97,13 @@ func Visualize(data [][]float64) {
 
 	fmt.Println(b0, b1)
 	fmt.Println(theta)
-	
+
 	// pred := test(theta, data)
 	// name = "Test"
 	style = "lines"
 	// pred = test([]float64{b0, b1}, data)
 	// fmt.Println(pred)
-plot.AddPointGroup(name, style, [][]float64{normData[0], pred})
+	plot.AddPointGroup(name, style, [][]float64{normData[0], pred})
 	// plot.AddPointGroup(name, style, [][]float64{data[0], pred})
 	fmt.Println(plot.SavePlot("testG.png"))
 	plot.ResetPlot()
@@ -120,8 +120,8 @@ plot.AddPointGroup(name, style, [][]float64{normData[0], pred})
 	// mean := Mean(data[0])
 	// stdDev := StdDev(data[0], mean)
 	// theta[0] = theta[0] * StdDev(data[1], Mean(data[1])) +Mean(data[1]) - (theta[1] * StdDev(data[0], Mean(data[0])) + Mean(data[1]))
-	theta[1] = (maxY-minY)* theta[1]/(maxX-minX)
-	theta[0] = minY + ((maxY-minY)*theta[0]) + theta[1]*(1-minX)
+	theta[1] = (maxY - minY) * theta[1] / (maxX - minX)
+	theta[0] = minY + ((maxY - minY) * theta[0]) + theta[1]*(1-minX)
 	fmt.Println(theta)
 	pred = line(theta[0], theta[1], data[0])
 	plot.AddPointGroup(name, style, [][]float64{data[0], pred})

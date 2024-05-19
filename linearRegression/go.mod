@@ -1,4 +1,4 @@
-module trainer
+module gradient
 
 go 1.21.4
 
