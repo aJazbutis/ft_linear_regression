@@ -1,3 +1,5 @@
+package stats
+
 import (
 	"encoding/csv"
 	"slices"
@@ -137,3 +139,47 @@ func ParseCsv(path string) [][]float64 {
 	// fmt.Println(ret)
 	return ret
 }
+
+/*Z-score normalization (standardization)*/
+func Standartize(data [][]float64) [][]float64 {
+	ret := make([][]float64, len(data))
+	for i := range ret {
+		ret[i] = make([]float64, len(data[i]))
+	}
+	for i := range data {
+		mean :=  Mean(data[i])
+		stdDev := StdDev(data[i], mean)
+		for j := range data[i] {
+			ret[i][j] = (data[i][j] - mean) / stdDev
+		}
+	}
+	return ret
+}
+
+/*Min-Max Scaling*/
+func Normalize(data [][]float64) [][]float64 {
+	ret := make([][]float64, len(data))
+	for i := range ret {
+		ret[i] = make([]float64, len(data[i]))
+	}
+	for i := range data {
+		n, x := MinMax(data[i])
+		for j := range data[i] {
+			ret[i][j] = (data[i][j] - n) / (x - n)
+		}
+	}
+	return ret
+}
+
+/*
+func NormalizeWithMinMax(data []float64, n, x float64) []float64 {
+	ret := make([]float64, len(data))
+	for i := range ret {
+		ret[i] = make([]float64, len(data[i]))
+	}
+		for j := range data[i] {
+			ret[i][j] = (data[i][j] - n) / (x - n)
+		}
+	return ret
+}
+*/

@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
+	"linearRegression/internal/gradientDescend"
 	"log"
-	"gradient/internal"
 )
 
 func main()  {
@@ -14,5 +14,5 @@ func main()  {
 	}()
 	f := flag.String("f", "../../../data.csv", "csv file, format: x, y")
 	flag.Parse()
-	internal.Visualize(internal.ParseCsv(*f))
+	gradientDescend.Descend(*f)
 }
