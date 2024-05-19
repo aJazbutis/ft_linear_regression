@@ -44,14 +44,26 @@ func getData(path string) Data{
 
 func Descend(path string)  {
 	data := getData(path)
+	VisualizeData(&data)
+
 	descend(&data)
-	
-	// Visualize(data)
-	fmt.Println(data.Theta)
+	// fmt.Println(data.Theta)
+	prediction := predict(data.Norm[0], data.Theta)
+	mse := stats.MSE([][]float64{data.Norm[1], prediction})
+	mae := stats.MAE([][]float64{data.Norm[1], prediction})
+	// VisualizeNormData(&data, prediction)
+	fmt.Println("MSE:", mse)
+	fmt.Println("MAE:", mae)
 	data.rescaleThetas()
-	fmt.Println(data.Theta)
+	prediction = predict(data.Data[0], data.Theta)
+	// VisualizeRescaled(&data, prediction)
+	r2 := stats.R2(data.Data, data.Theta[0], data.Theta[1])
+	fmt.Println("r^2:",  r2)
+	fmt.Println("theta0:", data.Theta[0])
+	fmt.Println("theta1:", data.Theta[1])
 }
 
+//TODO look into step modification
 func descend(data *Data) {
 	data.Theta = []float64{rand.Float64(), rand.Float64()}
 	for it := 0; it < iterations; it++ {

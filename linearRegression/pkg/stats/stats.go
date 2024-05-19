@@ -2,10 +2,9 @@ package stats
 
 import (
 	"encoding/csv"
-	"slices"
-	// "fmt"
 	"math"
 	"os"
+	"slices"
 	"strconv"
 )
 
@@ -86,6 +85,35 @@ func R2(data [][]float64, b0, b1 float64) float64 {
 	return (varMean - varFit) / varMean
 }
 
+/*
+Mean Square Error
+data[0] -> y
+data[1] -> y^
+could use SsFit..
+*/
+func MSE(data [][]float64) float64 {
+	var ret float64
+	n := float64(len(data[0]))
+	for i := range data[0] {
+		ret += math.Pow(data[0][i]-data[1][i], 2)
+	}
+	return ret / n
+}
+
+/*
+Mean Absolute Error
+data[0] -> y
+data[1] -> y^
+*/
+func MAE(data [][]float64) float64 {
+	var ret float64
+	n := float64(len(data[0]))
+	for i := range data[0] {
+		ret += math.Abs(data[0][i] - data[1][i])
+	}
+	return ret / n
+}
+
 func MinMax(data []float64) (float64, float64) {
 	n, x := data[0], data[0]
 	for _, v := range data {
@@ -98,12 +126,12 @@ func quantile(data []float64, m, q int) float64 {
 	n := len(data)
 	var i int
 	var ret float64
-	i = (m*n)/q
+	i = (m * n) / q
 	if n%q == 1 {
 		i++
 		ret = data[i]
 	} else {
-		ret = (data[i]+data[i+1])/2
+		ret = (data[i] + data[i+1]) / 2
 	}
 	return ret
 }
@@ -131,12 +159,8 @@ func ParseCsv(path string) [][]float64 {
 	if err != nil {
 		panic(err)
 	}
-	// for _, v := range result {
-		// fmt.Println(v)
-	// }
 	ret := toFloat(result[1:])
 	// ret = Transpose(ret)
-	// fmt.Println(ret)
 	return ret
 }
 
@@ -147,7 +171,7 @@ func Standartize(data [][]float64) [][]float64 {
 		ret[i] = make([]float64, len(data[i]))
 	}
 	for i := range data {
-		mean :=  Mean(data[i])
+		mean := Mean(data[i])
 		stdDev := StdDev(data[i], mean)
 		for j := range data[i] {
 			ret[i][j] = (data[i][j] - mean) / stdDev

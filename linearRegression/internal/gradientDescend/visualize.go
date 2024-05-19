@@ -5,6 +5,7 @@ import (
 
 	"github.com/arafatk/glot"
 )
+
 const (
 	dimensions = 2
 	persist = false
@@ -32,7 +33,59 @@ func predict(data, theta []float64) []float64 {
 	return ret
 }
 
-func Visualize(data Data) {
+func VisualizeData(data *Data) {
+	plot, err := glot.NewPlot(dimensions, persist, debug)
+	if err != nil {
+		panic(err)
+	}
+	defer plot.Close()
+	/*
+		csv data scatter
+	*/
+	name := "Data"
+	style := "points"
+	plot.AddPointGroup(name, style, data.Data)
+	plot.SetXLabel("Mileage")
+	plot.SetYLabel("Price")
+	plot.SavePlot("Data.png")
+}
+
+func VisualizeNormData(data *Data, prediction []float64) {
+	plot, err := glot.NewPlot(dimensions, persist, debug)
+	if err != nil {
+		panic(err)
+	}
+	defer plot.Close()
+	name := "Normalised data"
+	style := "points"
+	plot.SetLabels("x", "f(x)")
+	plot.AddPointGroup(name, style, data.Norm)
+	
+	style = "lines"
+	name = "Line of Regression"
+	// prediction := predict(data.Norm[0], data.Theta)
+	plot.AddPointGroup(name, style, [][]float64{data.Norm[0], prediction})
+	plot.SavePlot("NormalizedData.png")
+}
+
+func VisualizeRescaled(data *Data, prediction []float64) {
+	plot, err := glot.NewPlot(dimensions, persist, debug)
+	if err != nil {
+		panic(err)
+	}
+	name := "Data"
+	style := "points"
+	plot.SetLabels("Mileage", "Price")
+	plot.AddPointGroup(name, style, data.Data)
+
+	name = "Line of Regression"
+	// prediction := predict(data.Data[0], data.Theta)
+	plot.AddPointGroup(name, style, [][]float64{data.Data[0], prediction})
+	plot.SavePlot("Result.png")
+
+}
+
+func Visualize(data *Data) {
 	plot, _ := glot.NewPlot(dimensions, persist, debug)
 	defer plot.Close()
 	/*
@@ -83,7 +136,7 @@ func Visualize(data Data) {
 
 	// pred := test(theta, data)
 	// name = "Test"
-	style = "lines"
+	// style = "lines"
 	// pred = test([]float64{b0, b1}, data)
 	// fmt.Println(pred)
 	// plot.AddPointGroup(name, style, [][]float64{normData[0], pred})
