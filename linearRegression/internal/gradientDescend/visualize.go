@@ -6,8 +6,8 @@ import (
 
 const (
 	dimensions = 2
-	persist = false
-	debug = false
+	persist    = false
+	debug      = false
 )
 
 func Scatter(data [][]float64, name, xAxis, yAxis, path string) {
@@ -58,7 +58,7 @@ func VisualizeNormData(data *Data, prediction []float64) {
 	style := "points"
 	plot.SetLabels("x", "f(x)")
 	plot.AddPointGroup(name, style, data.Norm)
-	
+
 	style = "lines"
 	name = "Line of Regression"
 	// prediction := predict(data.Norm[0], data.Theta)
@@ -102,7 +102,7 @@ func Visualize(data *Data) {
 	name = "Normalised data"
 	plot.SetLabels("x", "f(x)")
 	plot.AddPointGroup(name, style, data.Norm)
-	
+
 	style = "lines"
 	name = "Line of Regression"
 	prediction := predict(data.Norm[0], data.Theta)
@@ -121,7 +121,7 @@ func Visualize(data *Data) {
 	name = "Line of Regression"
 	prediction = predict(data.Data[0], data.Theta)
 	plot.AddPointGroup(name, style, [][]float64{data.Data[0], prediction})
-	plot.SavePlot("Result.png")	
+	plot.SavePlot("Result.png")
 	// b0, b1 := MinSq(data)
 	// fmt.Println(R2(data, b0, b1))
 	// name = "minsqr"

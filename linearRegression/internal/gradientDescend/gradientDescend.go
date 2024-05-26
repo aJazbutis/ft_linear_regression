@@ -8,32 +8,32 @@ import (
 )
 
 const (
-	learningRate	= 0.01
-	iterations		= 10000
-	minStepSize		= 0.00001
+	learningRate = 0.01
+	iterations   = 10000
+	minStepSize  = 0.00001
 )
 
 type Data struct {
-	Data	[][]float64
-	Norm	[][]float64
-	MeanX	float64
-	MeanY	float64
-	MinX	float64
-	MaxX	float64
-	MinY	float64
-	MaxY	float64
-	Theta	[]float64
+	Data  [][]float64
+	Norm  [][]float64
+	MeanX float64
+	MeanY float64
+	MinX  float64
+	MaxX  float64
+	MinY  float64
+	MaxY  float64
+	Theta []float64
 }
 
 /*
-	scale back to fit orginal data
+scale back to fit orginal data
 */
 func (data *Data) rescaleThetas() {
 	data.Theta[1] = (data.MaxY - data.MinY) * data.Theta[1] / (data.MaxX - data.MinX)
-	data.Theta[0] = data.MinY + ((data.MaxY-data.MinY) * data.Theta[0]) + data.Theta[1]*(1-data.MinX)
+	data.Theta[0] = data.MinY + ((data.MaxY - data.MinY) * data.Theta[0]) + data.Theta[1]*(1-data.MinX)
 }
 
-func getData(path string) Data{
+func getData(path string) Data {
 	var data Data
 	data.Data = stats.Transpose(stats.ParseCsv(path))
 	data.MinX, data.MaxX = stats.MinMax(data.Data[0])
@@ -42,23 +42,26 @@ func getData(path string) Data{
 	return data
 }
 
-func Descend(path string)  {
+func Descend(path string) {
 	data := getData(path)
-	//VisualizeData(&data)
+	VisualizeData(&data)
 
+	/* almost 30 times less iterations(epochs) last run 333*/
 	// descendSumOfSqRes(&data)
+
+	/*provided formulas last run 9106 iterations*/
 	descendAverageRes(&data)
 	prediction := predict(data.Norm[0], data.Theta)
 	mse := stats.MSE([][]float64{data.Norm[1], prediction})
 	mae := stats.MAE([][]float64{data.Norm[1], prediction})
-	//VisualizeNormData(&data, prediction)
+	VisualizeNormData(&data, prediction)
 	fmt.Println("MSE:", mse)
 	fmt.Println("MAE:", mae)
 	data.rescaleThetas()
 	prediction = predict(data.Data[0], data.Theta)
-	//VisualizeRescaled(&data, prediction)
+	VisualizeRescaled(&data, prediction)
 	r2 := stats.R2(data.Data, data.Theta[0], data.Theta[1])
-	fmt.Println("r^2:",  r2)
+	fmt.Println("r^2:", r2)
 	fmt.Println("theta0:", data.Theta[0])
 	fmt.Println("theta1:", data.Theta[1])
 }
@@ -81,7 +84,6 @@ func descendSumOfSqRes(data *Data) {
 
 	}
 }
-
 
 /* provided formulas */
 func descendAverageRes(data *Data) {
