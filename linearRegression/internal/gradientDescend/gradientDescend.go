@@ -44,27 +44,47 @@ func getData(path string) Data{
 
 func Descend(path string)  {
 	data := getData(path)
-	VisualizeData(&data)
+	//VisualizeData(&data)
 
-	descend(&data)
-	// fmt.Println(data.Theta)
+	// descendSumOfSqRes(&data)
+	descendAverageRes(&data)
 	prediction := predict(data.Norm[0], data.Theta)
 	mse := stats.MSE([][]float64{data.Norm[1], prediction})
 	mae := stats.MAE([][]float64{data.Norm[1], prediction})
-	VisualizeNormData(&data, prediction)
+	//VisualizeNormData(&data, prediction)
 	fmt.Println("MSE:", mse)
 	fmt.Println("MAE:", mae)
 	data.rescaleThetas()
 	prediction = predict(data.Data[0], data.Theta)
-	VisualizeRescaled(&data, prediction)
+	//VisualizeRescaled(&data, prediction)
 	r2 := stats.R2(data.Data, data.Theta[0], data.Theta[1])
 	fmt.Println("r^2:",  r2)
 	fmt.Println("theta0:", data.Theta[0])
 	fmt.Println("theta1:", data.Theta[1])
 }
 
-//TODO look into step modification
-func descend(data *Data) {
+/* better one */
+func descendSumOfSqRes(data *Data) {
+	data.Theta = []float64{rand.Float64(), rand.Float64()}
+	for it := 0; it < iterations; it++ {
+		intercept := DerInteceptSumOfSqRes(data.Norm, data.Theta[0], data.Theta[1])
+		slope := DerSlopeSumOfSqRes(data.Norm, data.Theta[0], data.Theta[1])
+		stepSizeIntercept := intercept * learningRate
+		stepSizeSlope := slope * learningRate
+		stepSize := math.Sqrt(math.Pow(stepSizeIntercept, 2) + math.Pow(stepSizeSlope, 2))
+		if stepSize <= minStepSize {
+			fmt.Println("Iterations: ", it+1)
+			break
+		}
+		data.Theta[0] -= stepSizeIntercept
+		data.Theta[1] -= stepSizeSlope
+
+	}
+}
+
+
+/* provided formulas */
+func descendAverageRes(data *Data) {
 	data.Theta = []float64{rand.Float64(), rand.Float64()}
 	for it := 0; it < iterations; it++ {
 		tmpT0, tmpT1 := TmpT0(data.Norm, learningRate, data.Theta), TmpT1(data.Norm, learningRate, data.Theta)

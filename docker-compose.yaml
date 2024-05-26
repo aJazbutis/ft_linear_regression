@@ -1,9 +1,0 @@
-version: '3.8'
-services:
-  go_mit_gnuplot:
-    build:
-      context: ./docker
-    tty: true
-      #    command: tail -F /dev/null
-    volumes:
-        - /Users/ajazbuti/ft_linear_regression/:/goproject

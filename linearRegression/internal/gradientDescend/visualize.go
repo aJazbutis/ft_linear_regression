@@ -1,8 +1,6 @@
 package gradientDescend
 
 import (
-	"linearRegression/pkg/estimatePrice"
-
 	"github.com/arafatk/glot"
 )
 
@@ -28,7 +26,7 @@ func Scatter(data [][]float64, name, xAxis, yAxis, path string) {
 func predict(data, theta []float64) []float64 {
 	ret := make([]float64, len(data))
 	for i := range data {
-		ret[i] = estimatePrice.EstimatePrice(theta, data[i])
+		ret[i] = estimatePrice(theta, data[i])
 	}
 	return ret
 }
